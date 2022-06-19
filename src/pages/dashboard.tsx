@@ -9,7 +9,7 @@ import {
   Button,
   Collapse,
   Stack,
-  FormControl,
+  Select,
 } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { Header } from "../components/Header/header";
@@ -103,8 +103,11 @@ export default function Dashboard() {
   const [desempenho, setDesempenho] = useState(0);
   const [potenciaModulo, setPotenciaModulo] = useState(0);
   const [pfv, setPfv] = useState(0);
+  const [isSubmit, setIsSubmit] = useState(false);
 
   const [openMenu, setOpenMenu] = useState(false);
+  const [selectedModule, setSelectedModule] = useState("");
+  const [selectedInversor, setSelectedInversor] = useState("");
 
   const series = [
     {
@@ -143,6 +146,11 @@ export default function Dashboard() {
     },
   ];
 
+  function stopDefAction(evt) {
+    evt.preventDefault();
+    setIsSubmit(true);
+  }
+
   return (
     <>
       <Flex direction="column" h="100vh">
@@ -151,7 +159,12 @@ export default function Dashboard() {
         <Flex w="100%" my="6" maxWidth={1480} mx="auto" px="6">
           <Sidebar />
 
-          <Flex direction={"column"} w="100%">
+          <Flex
+            direction={"column"}
+            w="100%"
+            as={"form"}
+            onSubmit={stopDefAction}
+          >
             <Flex w={"100%"} direction={"column"} position="relative">
               <Flex
                 background="green.600"
@@ -206,6 +219,7 @@ export default function Dashboard() {
                       }}
                       type="number"
                       placeholder="KW"
+                      required
                     />
                   </Box>
                   <Box width={"7%"}>
@@ -214,6 +228,7 @@ export default function Dashboard() {
                       onChange={(e) => setFevereiro(parseInt(e.target.value))}
                       type="text"
                       placeholder="KW"
+                      required
                     />
                   </Box>
                   <Box width={"7%"}>
@@ -222,6 +237,7 @@ export default function Dashboard() {
                       onChange={(e) => setMarço(parseInt(e.target.value))}
                       type="number"
                       placeholder="KW"
+                      required
                     />
                   </Box>
                   <Box width={"7%"}>
@@ -230,6 +246,7 @@ export default function Dashboard() {
                       onChange={(e) => setAbril(parseInt(e.target.value))}
                       type="number"
                       placeholder="KW"
+                      required
                     />
                   </Box>
                   <Box width={"7%"}>
@@ -238,6 +255,7 @@ export default function Dashboard() {
                       onChange={(e) => setMaio(parseInt(e.target.value))}
                       type="number"
                       placeholder="KW"
+                      required
                     />
                   </Box>
 
@@ -247,6 +265,7 @@ export default function Dashboard() {
                       onChange={(e) => setJunho(parseInt(e.target.value))}
                       type="number"
                       placeholder="KW"
+                      required
                     />
                   </Box>
 
@@ -256,6 +275,7 @@ export default function Dashboard() {
                       onChange={(e) => setJulho(parseInt(e.target.value))}
                       type="number"
                       placeholder="KW"
+                      required
                     />
                   </Box>
 
@@ -265,6 +285,7 @@ export default function Dashboard() {
                       onChange={(e) => setAgosto(parseInt(e.target.value))}
                       type="number"
                       placeholder="KW"
+                      required
                     />
                   </Box>
 
@@ -274,6 +295,7 @@ export default function Dashboard() {
                       onChange={(e) => setSetembro(parseInt(e.target.value))}
                       type="number"
                       placeholder="KW"
+                      required
                     />
                   </Box>
 
@@ -283,6 +305,7 @@ export default function Dashboard() {
                       onChange={(e) => setOutubro(parseInt(e.target.value))}
                       type="number"
                       placeholder="KW"
+                      required
                     />
                   </Box>
 
@@ -292,6 +315,7 @@ export default function Dashboard() {
                       onChange={(e) => setNovembro(parseInt(e.target.value))}
                       type="number"
                       placeholder="KW"
+                      required
                     />
                   </Box>
 
@@ -301,11 +325,13 @@ export default function Dashboard() {
                       onChange={(e) => setDezembro(parseInt(e.target.value))}
                       type="number"
                       placeholder="KW"
+                      required
                     />
                   </Box>
                   <Button
                     w={"98%"}
                     colorScheme="green"
+                    type="submit"
                     onClick={() => {
                       setMediaMensal(
                         (janeiro +
@@ -332,7 +358,7 @@ export default function Dashboard() {
             </Flex>
 
             <Flex gap={"20px"}>
-              <Stack w="100%" as={"form"}>
+              <Stack w="100%">
                 <Box w={"100%"}>
                   <Text>Consumo médio mensal</Text>
                   <Input disabled value={`${mediaMensal.toFixed(2)} KW`} />
@@ -349,34 +375,145 @@ export default function Dashboard() {
                     type="text"
                     name="desempenho"
                     placeholder="Inserir valor"
-                    onChange={(e) => setDesempenho(parseInt(e.target.value))}
+                    required
+                    onChange={(e) => setDesempenho(parseFloat(e.target.value))}
                   />
                 </Box>
 
                 <Box w={"100%"}>
                   <Text>Potência do módulo</Text>
-                  <Input
-                    type="number"
-                    placeholder="Inserir valor"
-                    id="potenciaModulo"
-                  />
+                  <Select
+                    required
+                    defaultValue={"#"}
+                    onChange={(e) => setSelectedModule(e.target.value)}
+                  >
+                    <option style={{ background: "#2D3748" }} value="#">
+                      Selecione
+                    </option>
+                    <option style={{ background: "#2D3748" }} value="1">
+                      160W
+                    </option>
+                    <option style={{ background: "#2D3748" }} value="2">
+                      340W
+                    </option>
+                    <option style={{ background: "#2D3748" }} value="3">
+                      400W
+                    </option>
+                    <option style={{ background: "#2D3748" }} value="4">
+                      435W
+                    </option>
+                    <option style={{ background: "#2D3748" }} value="5">
+                      450W
+                    </option>
+                    <option style={{ background: "#2D3748" }} value="6">
+                      550W
+                    </option>
+                  </Select>
                 </Box>
 
                 <Box w={"100%"}>
                   <Text>Valor do módulo</Text>
                   <Input
-                    type="number"
-                    placeholder="Inserir valor"
+                    type="text"
+                    placeholder="Valor do módulo"
                     id="valorModulo"
+                    disabled
+                    value={
+                      selectedModule === "1"
+                        ? "R$ 650"
+                        : selectedModule === "2"
+                        ? `R$ ${810}`
+                        : selectedModule === "3"
+                        ? `R$ ${"1000"}`
+                        : selectedModule === "4"
+                        ? `R$ ${"1165"}`
+                        : selectedModule === "5"
+                        ? `R$ ${"1240"}`
+                        : selectedModule === "6"
+                        ? `R$ ${1655} `
+                        : ""
+                    }
                   />
+                </Box>
+
+                <Box w={"100%"}>
+                  <Text>Potência do Inversor</Text>
+                  <Select
+                    required
+                    defaultValue={"#"}
+                    onChange={(e) => setSelectedInversor(e.target.value)}
+                  >
+                    <option style={{ background: "#2D3748" }} value="#">
+                      Selecione
+                    </option>
+                    <option style={{ background: "#2D3748" }} value="1">
+                      3kW
+                    </option>
+                    <option style={{ background: "#2D3748" }} value="2">
+                      5kW
+                    </option>
+                    <option style={{ background: "#2D3748" }} value="3">
+                      7kW
+                    </option>
+                    <option style={{ background: "#2D3748" }} value="4">
+                      9kW
+                    </option>
+                    <option style={{ background: "#2D3748" }} value="5">
+                      15kW
+                    </option>
+                    <option style={{ background: "#2D3748" }} value="6">
+                      20kW
+                    </option>
+                    <option style={{ background: "#2D3748" }} value="7">
+                      25kW
+                    </option>
+                    <option style={{ background: "#2D3748" }} value="8">
+                      30kW
+                    </option>
+                    <option style={{ background: "#2D3748" }} value="9">
+                      40kW
+                    </option>
+                    <option style={{ background: "#2D3748" }} value="10">
+                      75kW
+                    </option>
+                    <option style={{ background: "#2D3748" }} value="11">
+                      125kW
+                    </option>
+                  </Select>
                 </Box>
 
                 <Box w={"100%"}>
                   <Text>Valor do Inversor</Text>
                   <Input
-                    type="number"
-                    placeholder="Inserir valor"
-                    id="valorInversor"
+                    type="text"
+                    placeholder="Valor do módulo"
+                    id="valorModulo"
+                    disabled
+                    value={
+                      selectedInversor === "1"
+                        ? "R$ 2600"
+                        : selectedInversor === "2"
+                        ? `R$ 4000`
+                        : selectedInversor === "3"
+                        ? `R$ 5300`
+                        : selectedInversor === "4"
+                        ? `R$ 6735`
+                        : selectedInversor === "5"
+                        ? `R$ 9700`
+                        : selectedInversor === "6"
+                        ? `R$ 11100`
+                        : selectedInversor === "7"
+                        ? `R$ 13600`
+                        : selectedInversor === "8"
+                        ? `R$ 16250`
+                        : selectedInversor === "9"
+                        ? `R$ 16624`
+                        : selectedInversor === "10"
+                        ? `R$ 27000`
+                        : selectedInversor === "11"
+                        ? `R$ 30190`
+                        : ""
+                    }
                   />
                 </Box>
 
@@ -396,7 +533,7 @@ export default function Dashboard() {
                 borderRadius={"8px"}
                 direction="column"
               >
-                <Text>PFV: {pfv.toFixed(2)}</Text>
+                {isSubmit && <Text>PFV: {pfv.toFixed(2)}</Text>}
               </Flex>
             </Flex>
             <SimpleGrid flex="1" gap="4" minChildWidth="320px" marginTop={6}>
