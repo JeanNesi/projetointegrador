@@ -108,6 +108,7 @@ export default function Dashboard() {
   const [openMenu, setOpenMenu] = useState(false);
   const [selectedModule, setSelectedModule] = useState("");
   const [selectedInversor, setSelectedInversor] = useState("");
+  const [numeroModulos, setNumeroModulos] = useState(0);
 
   const series = [
     {
@@ -146,9 +147,17 @@ export default function Dashboard() {
     },
   ];
 
+  console.log(selectedModule);
+
   function stopDefAction(evt) {
     evt.preventDefault();
     setIsSubmit(true);
+    setOpenMenu(false);
+  }
+
+  function calcular(modulee) {
+    setNumeroModulos(pfv / (parseInt(modulee) / 1000));
+    setPfv(mediaMensal / (4.38 * 30 * desempenho));
   }
 
   return (
@@ -217,6 +226,7 @@ export default function Dashboard() {
                       onChange={(e) => {
                         setJaneiro(parseInt(e.target.value));
                       }}
+                      name="jan"
                       type="number"
                       placeholder="KW"
                       required
@@ -228,6 +238,7 @@ export default function Dashboard() {
                       onChange={(e) => setFevereiro(parseInt(e.target.value))}
                       type="text"
                       placeholder="KW"
+                      name="fev"
                       required
                     />
                   </Box>
@@ -236,6 +247,7 @@ export default function Dashboard() {
                     <Input
                       onChange={(e) => setMarço(parseInt(e.target.value))}
                       type="number"
+                      name="mar"
                       placeholder="KW"
                       required
                     />
@@ -245,6 +257,7 @@ export default function Dashboard() {
                     <Input
                       onChange={(e) => setAbril(parseInt(e.target.value))}
                       type="number"
+                      name="abr"
                       placeholder="KW"
                       required
                     />
@@ -254,6 +267,7 @@ export default function Dashboard() {
                     <Input
                       onChange={(e) => setMaio(parseInt(e.target.value))}
                       type="number"
+                      name="maio"
                       placeholder="KW"
                       required
                     />
@@ -264,6 +278,7 @@ export default function Dashboard() {
                     <Input
                       onChange={(e) => setJunho(parseInt(e.target.value))}
                       type="number"
+                      name="jun"
                       placeholder="KW"
                       required
                     />
@@ -274,6 +289,7 @@ export default function Dashboard() {
                     <Input
                       onChange={(e) => setJulho(parseInt(e.target.value))}
                       type="number"
+                      name="jul"
                       placeholder="KW"
                       required
                     />
@@ -284,6 +300,7 @@ export default function Dashboard() {
                     <Input
                       onChange={(e) => setAgosto(parseInt(e.target.value))}
                       type="number"
+                      name="ago"
                       placeholder="KW"
                       required
                     />
@@ -294,6 +311,7 @@ export default function Dashboard() {
                     <Input
                       onChange={(e) => setSetembro(parseInt(e.target.value))}
                       type="number"
+                      name="set"
                       placeholder="KW"
                       required
                     />
@@ -304,6 +322,7 @@ export default function Dashboard() {
                     <Input
                       onChange={(e) => setOutubro(parseInt(e.target.value))}
                       type="number"
+                      name="out"
                       placeholder="KW"
                       required
                     />
@@ -314,6 +333,7 @@ export default function Dashboard() {
                     <Input
                       onChange={(e) => setNovembro(parseInt(e.target.value))}
                       type="number"
+                      name="nov"
                       placeholder="KW"
                       required
                     />
@@ -324,6 +344,7 @@ export default function Dashboard() {
                     <Input
                       onChange={(e) => setDezembro(parseInt(e.target.value))}
                       type="number"
+                      name="dez"
                       placeholder="KW"
                       required
                     />
@@ -331,7 +352,6 @@ export default function Dashboard() {
                   <Button
                     w={"98%"}
                     colorScheme="green"
-                    type="submit"
                     onClick={() => {
                       setMediaMensal(
                         (janeiro +
@@ -348,7 +368,6 @@ export default function Dashboard() {
                           dezembro) /
                           12
                       );
-                      setOpenMenu(false);
                     }}
                   >
                     Calcular
@@ -361,7 +380,12 @@ export default function Dashboard() {
               <Stack w="100%">
                 <Box w={"100%"}>
                   <Text>Consumo médio mensal</Text>
-                  <Input disabled value={`${mediaMensal.toFixed(2)} KW`} />
+                  <Input
+                    disabled
+                    required
+                    defaultValue={"0 KW"}
+                    value={`${mediaMensal.toFixed(2)} KW`}
+                  />
                 </Box>
 
                 <Box w={"100%"}>
@@ -390,22 +414,22 @@ export default function Dashboard() {
                     <option style={{ background: "#2D3748" }} value="#">
                       Selecione
                     </option>
-                    <option style={{ background: "#2D3748" }} value="1">
+                    <option style={{ background: "#2D3748" }} value="160">
                       160W
                     </option>
-                    <option style={{ background: "#2D3748" }} value="2">
+                    <option style={{ background: "#2D3748" }} value="340">
                       340W
                     </option>
-                    <option style={{ background: "#2D3748" }} value="3">
+                    <option style={{ background: "#2D3748" }} value="400">
                       400W
                     </option>
-                    <option style={{ background: "#2D3748" }} value="4">
+                    <option style={{ background: "#2D3748" }} value="435">
                       435W
                     </option>
-                    <option style={{ background: "#2D3748" }} value="5">
+                    <option style={{ background: "#2D3748" }} value="450">
                       450W
                     </option>
-                    <option style={{ background: "#2D3748" }} value="6">
+                    <option style={{ background: "#2D3748" }} value="550">
                       550W
                     </option>
                   </Select>
@@ -419,17 +443,17 @@ export default function Dashboard() {
                     id="valorModulo"
                     disabled
                     value={
-                      selectedModule === "1"
+                      selectedModule === "160"
                         ? "R$ 650"
-                        : selectedModule === "2"
+                        : selectedModule === "340"
                         ? `R$ ${810}`
-                        : selectedModule === "3"
+                        : selectedModule === "400"
                         ? `R$ ${"1000"}`
-                        : selectedModule === "4"
+                        : selectedModule === "435"
                         ? `R$ ${"1165"}`
-                        : selectedModule === "5"
+                        : selectedModule === "450"
                         ? `R$ ${"1240"}`
-                        : selectedModule === "6"
+                        : selectedModule === "550"
                         ? `R$ ${1655} `
                         : ""
                     }
@@ -439,7 +463,6 @@ export default function Dashboard() {
                 <Box w={"100%"}>
                   <Text>Potência do Inversor</Text>
                   <Select
-                    required
                     defaultValue={"#"}
                     onChange={(e) => setSelectedInversor(e.target.value)}
                   >
@@ -519,7 +542,7 @@ export default function Dashboard() {
 
                 <Button
                   colorScheme={"green"}
-                  onClick={() => setPfv(mediaMensal / (4.38 * 30 * desempenho))}
+                  onClick={() => calcular(selectedModule)}
                   type="submit"
                   id="send"
                 >
@@ -533,22 +556,39 @@ export default function Dashboard() {
                 borderRadius={"8px"}
                 direction="column"
               >
-                {isSubmit && <Text>PFV: {pfv.toFixed(2)}</Text>}
+                {isSubmit && (
+                  <>
+                    <Text fontWeight={"bold"} fontSize={60}>
+                      PFV: {pfv.toFixed(2)}
+                    </Text>
+                    <Text>N: {numeroModulos.toFixed(0)}</Text>
+                  </>
+                )}
               </Flex>
             </Flex>
-            <SimpleGrid flex="1" gap="4" minChildWidth="320px" marginTop={6}>
-              <Box p={["6", "8"]} bg="gray.800" borderRadius={8}>
-                <Text fontSize="lg" mb="4">
-                  Gasto mensal x Geração mensal
-                </Text>
-                <Chart
-                  type="bar"
-                  height={300}
-                  options={options}
-                  series={series}
-                />
-              </Box>
-            </SimpleGrid>
+
+            {isSubmit && (
+              <>
+                <SimpleGrid
+                  flex="1"
+                  gap="4"
+                  minChildWidth="320px"
+                  marginTop={6}
+                >
+                  <Box p={["6", "8"]} bg="gray.800" borderRadius={8}>
+                    <Text fontSize="lg" mb="4">
+                      Gasto mensal x Geração mensal
+                    </Text>
+                    <Chart
+                      type="bar"
+                      height={300}
+                      options={options}
+                      series={series}
+                    />
+                  </Box>
+                </SimpleGrid>
+              </>
+            )}
           </Flex>
         </Flex>
       </Flex>
