@@ -9,7 +9,6 @@ import {
   Button,
   Collapse,
   Stack,
-  Select,
 } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { Header } from "../components/Header/header";
@@ -101,14 +100,16 @@ export default function Dashboard() {
   const [dezembro, setDezembro] = useState(0);
   const [mediaMensal, setMediaMensal] = useState(0);
   const [desempenho, setDesempenho] = useState(0);
-  const [potenciaModulo, setPotenciaModulo] = useState(0);
   const [pfv, setPfv] = useState(0);
   const [isSubmit, setIsSubmit] = useState(false);
 
   const [openMenu, setOpenMenu] = useState(false);
   const [selectedModule, setSelectedModule] = useState("");
+  const [valueModule, setValueModule] = useState("");
   const [selectedInversor, setSelectedInversor] = useState("");
+  const [valueInversor, setValueInversor] = useState("");
   const [numeroModulos, setNumeroModulos] = useState(0);
+  const [valorTotal, setValorTotal] = useState(0);
 
   const series = [
     {
@@ -400,143 +401,49 @@ export default function Dashboard() {
                     name="desempenho"
                     placeholder="Inserir valor"
                     required
+                    max="1"
+                    min="0"
                     onChange={(e) => setDesempenho(parseFloat(e.target.value))}
                   />
                 </Box>
 
                 <Box w={"100%"}>
                   <Text>Potência do módulo</Text>
-                  <Select
+                  <Input
                     required
-                    defaultValue={"#"}
+                    placeholder="Digite o valor"
+                    min="0"
                     onChange={(e) => setSelectedModule(e.target.value)}
-                  >
-                    <option style={{ background: "#2D3748" }} value="#">
-                      Selecione
-                    </option>
-                    <option style={{ background: "#2D3748" }} value="160">
-                      160W
-                    </option>
-                    <option style={{ background: "#2D3748" }} value="340">
-                      340W
-                    </option>
-                    <option style={{ background: "#2D3748" }} value="400">
-                      400W
-                    </option>
-                    <option style={{ background: "#2D3748" }} value="435">
-                      435W
-                    </option>
-                    <option style={{ background: "#2D3748" }} value="450">
-                      450W
-                    </option>
-                    <option style={{ background: "#2D3748" }} value="550">
-                      550W
-                    </option>
-                  </Select>
+                  />
                 </Box>
 
                 <Box w={"100%"}>
                   <Text>Valor do módulo</Text>
                   <Input
-                    type="text"
-                    placeholder="Valor do módulo"
+                    type="number"
+                    min="0"
+                    placeholder="Digite o valor"
                     id="valorModulo"
-                    disabled
-                    value={
-                      selectedModule === "160"
-                        ? "R$ 650"
-                        : selectedModule === "340"
-                        ? `R$ ${810}`
-                        : selectedModule === "400"
-                        ? `R$ ${"1000"}`
-                        : selectedModule === "435"
-                        ? `R$ ${"1165"}`
-                        : selectedModule === "450"
-                        ? `R$ ${"1240"}`
-                        : selectedModule === "550"
-                        ? `R$ ${1655} `
-                        : ""
-                    }
+                    onChange={(e) => setValueModule(e.target.value)}
                   />
                 </Box>
 
                 <Box w={"100%"}>
                   <Text>Potência do Inversor</Text>
-                  <Select
-                    defaultValue={"#"}
+                  <Input
+                    placeholder="Digite o valor"
                     onChange={(e) => setSelectedInversor(e.target.value)}
-                  >
-                    <option style={{ background: "#2D3748" }} value="#">
-                      Selecione
-                    </option>
-                    <option style={{ background: "#2D3748" }} value="1">
-                      3kW
-                    </option>
-                    <option style={{ background: "#2D3748" }} value="2">
-                      5kW
-                    </option>
-                    <option style={{ background: "#2D3748" }} value="3">
-                      7kW
-                    </option>
-                    <option style={{ background: "#2D3748" }} value="4">
-                      9kW
-                    </option>
-                    <option style={{ background: "#2D3748" }} value="5">
-                      15kW
-                    </option>
-                    <option style={{ background: "#2D3748" }} value="6">
-                      20kW
-                    </option>
-                    <option style={{ background: "#2D3748" }} value="7">
-                      25kW
-                    </option>
-                    <option style={{ background: "#2D3748" }} value="8">
-                      30kW
-                    </option>
-                    <option style={{ background: "#2D3748" }} value="9">
-                      40kW
-                    </option>
-                    <option style={{ background: "#2D3748" }} value="10">
-                      75kW
-                    </option>
-                    <option style={{ background: "#2D3748" }} value="11">
-                      125kW
-                    </option>
-                  </Select>
+                  />
                 </Box>
 
                 <Box w={"100%"}>
                   <Text>Valor do Inversor</Text>
                   <Input
                     type="text"
-                    placeholder="Valor do módulo"
+                    min="0"
+                    placeholder="Digite o valor"
                     id="valorModulo"
-                    disabled
-                    value={
-                      selectedInversor === "1"
-                        ? "R$ 2600"
-                        : selectedInversor === "2"
-                        ? `R$ 4000`
-                        : selectedInversor === "3"
-                        ? `R$ 5300`
-                        : selectedInversor === "4"
-                        ? `R$ 6735`
-                        : selectedInversor === "5"
-                        ? `R$ 9700`
-                        : selectedInversor === "6"
-                        ? `R$ 11100`
-                        : selectedInversor === "7"
-                        ? `R$ 13600`
-                        : selectedInversor === "8"
-                        ? `R$ 16250`
-                        : selectedInversor === "9"
-                        ? `R$ 16624`
-                        : selectedInversor === "10"
-                        ? `R$ 27000`
-                        : selectedInversor === "11"
-                        ? `R$ 30190`
-                        : ""
-                    }
+                    onChange={(e) => setValueInversor(e.target.value)}
                   />
                 </Box>
 
@@ -556,39 +463,39 @@ export default function Dashboard() {
                 borderRadius={"8px"}
                 direction="column"
               >
-                {isSubmit && (
-                  <>
-                    <Text fontWeight={"bold"} fontSize={60}>
-                      PFV: {pfv.toFixed(2)}
-                    </Text>
-                    <Text>N: {numeroModulos.toFixed(0)}</Text>
-                  </>
-                )}
+                {/* {isSubmit && (
+                  <> */}
+                <Text fontWeight={"bold"} fontSize={60}>
+                  PFV: {pfv.toFixed(2)}
+                </Text>
+                <Text>N: {numeroModulos.toFixed(0)}</Text>
+                <Text>{valueModule}</Text>
+                <Text>{valueInversor}</Text>
+                <Text>{selectedModule}</Text>
+                <Text>{selectedInversor}</Text>
+                <Text></Text>
+                {/* </>
+                )} */}
               </Flex>
             </Flex>
 
-            {isSubmit && (
-              <>
-                <SimpleGrid
-                  flex="1"
-                  gap="4"
-                  minChildWidth="320px"
-                  marginTop={6}
-                >
-                  <Box p={["6", "8"]} bg="gray.800" borderRadius={8}>
-                    <Text fontSize="lg" mb="4">
-                      Gasto mensal x Geração mensal
-                    </Text>
-                    <Chart
-                      type="bar"
-                      height={300}
-                      options={options}
-                      series={series}
-                    />
-                  </Box>
-                </SimpleGrid>
-              </>
-            )}
+            {/* {isSubmit && (
+              <> */}
+            <SimpleGrid flex="1" gap="4" minChildWidth="320px" marginTop={6}>
+              <Box p={["6", "8"]} bg="gray.800" borderRadius={8}>
+                <Text fontSize="lg" mb="4">
+                  Gasto mensal x Geração mensal
+                </Text>
+                <Chart
+                  type="bar"
+                  height={300}
+                  options={options}
+                  series={series}
+                />
+              </Box>
+            </SimpleGrid>
+            {/* </>
+            )} */}
           </Flex>
         </Flex>
       </Flex>
