@@ -109,6 +109,8 @@ export default function Dashboard() {
   const [selectedInversor, setSelectedInversor] = useState("");
   const [valueInversor, setValueInversor] = useState("");
   const [numeroModulos, setNumeroModulos] = useState(0);
+  const [numerosInversor, setNumerosInversor] = useState(0);
+  const [valorMediaMensal, setValorMediaMensal] = useState(0);
   const [valorTotal, setValorTotal] = useState(0);
 
   const series = [
@@ -380,6 +382,11 @@ export default function Dashboard() {
             <Flex gap={"20px"}>
               <Stack w="100%">
                 <Box w={"100%"}>
+                  <Text>Irradiação solar diária média</Text>
+                  <Input disabled value={`4,18 kWh/m2.dia`} />
+                </Box>
+
+                <Box w={"100%"}>
                   <Text>Consumo médio mensal</Text>
                   <Input
                     disabled
@@ -390,8 +397,14 @@ export default function Dashboard() {
                 </Box>
 
                 <Box w={"100%"}>
-                  <Text>Irradiação solar diária média</Text>
-                  <Input disabled value={`4,18 kWh/m2.dia`} />
+                  <Text>Valor médio da fatura</Text>
+                  <Input
+                    type="text"
+                    min="0"
+                    placeholder="Digite o valor"
+                    id="valorModulo"
+                    onChange={(e) => setValorMediaMensal(e.target.value)}
+                  />
                 </Box>
 
                 <Box w={"100%"}>
@@ -447,6 +460,17 @@ export default function Dashboard() {
                   />
                 </Box>
 
+                <Box w={"100%"}>
+                  <Text>Unidades do Inversor</Text>
+                  <Input
+                    type="text"
+                    min="0"
+                    placeholder="Digite a quantidade"
+                    id="valorModulo"
+                    onChange={(e) => setNumerosInversor(e.target.value)}
+                  />
+                </Box>
+
                 <Button
                   colorScheme={"green"}
                   onClick={() => calcular(selectedModule)}
@@ -461,41 +485,120 @@ export default function Dashboard() {
                 w="100%"
                 border={"4px solid #2F855A"}
                 borderRadius={"8px"}
-                direction="column"
+                direction="row"
+                justify="space-between"
+                p={6}
               >
-                {/* {isSubmit && (
-                  <> */}
-                <Text fontWeight={"bold"} fontSize={60}>
-                  PFV: {pfv.toFixed(2)}
-                </Text>
-                <Text>N: {numeroModulos.toFixed(0)}</Text>
-                <Text>{valueModule}</Text>
-                <Text>{valueInversor}</Text>
-                <Text>{selectedModule}</Text>
-                <Text>{selectedInversor}</Text>
-                <Text></Text>
-                {/* </>
-                )} */}
+                {isSubmit && (
+                  <>
+                    <Box fontSize="20px">
+                      <Text fontWeight="bold" fontSize="30">
+                        Informações
+                      </Text>
+                      <Text>
+                        <strong>PFV</strong> : {pfv.toFixed(2)}
+                      </Text>
+                      <Text>
+                        <strong>Número de módulos</strong> :{" "}
+                        {numeroModulos.toFixed(0)} UN
+                      </Text>
+                      <Text>
+                        <strong>Potência do módulo</strong> : {selectedModule} W
+                      </Text>
+                      <Text>
+                        <strong>Valor dos módulos</strong>: R${valueModule}
+                      </Text>
+                      <br />
+                      <Text>
+                        <strong>Potência do Inversor</strong>:{" "}
+                        {selectedInversor} KW
+                      </Text>
+                      <Text>
+                        <strong>Valor do inversor</strong>: R${valueInversor}
+                      </Text>
+                      <Text>
+                        <strong>Unidades do inversor</strong>: {numerosInversor}{" "}
+                        UN
+                      </Text>
+                      <br />
+                      <Text fontWeight="bold" fontSize="30px">
+                        Valores
+                      </Text>
+                      <Text>
+                        <strong>Média mensal</strong>: R${valorMediaMensal}
+                      </Text>
+                      <Text>
+                        <strong>Dez</strong>: {dezembro} KW
+                      </Text>
+                    </Box>
+                    <Box fontSize="20px">
+                      <Text fontWeight="bold" fontSize="30px">
+                        Consumo:
+                      </Text>
+                      <Text>
+                        <strong>Jan</strong>: {janeiro} KW
+                      </Text>
+                      <Text>
+                        <strong>Fev</strong>: {fevereiro} KW
+                      </Text>
+                      <Text>
+                        <strong>Mar</strong>: {março} KW
+                      </Text>
+                      <Text>
+                        <strong>Abr</strong>: {abril} KW
+                      </Text>
+                      <Text>
+                        <strong>Maio</strong>: {maio} KW
+                      </Text>
+                      <Text>
+                        <strong>Jun</strong>: {junho} KW
+                      </Text>
+                      <Text>
+                        <strong>Jul</strong>: {julho} KW
+                      </Text>
+                      <Text>
+                        <strong>Ago</strong>: {agosto} KW
+                      </Text>
+                      <Text>
+                        <strong>Set</strong>: {setembro} KW
+                      </Text>
+                      <Text>
+                        <strong>Out</strong>: {outubro} KW
+                      </Text>
+                      <Text>
+                        <strong>Nov</strong>: {novembro} KW
+                      </Text>
+                      <Text>
+                        <strong>Dez</strong>: {dezembro} KW
+                      </Text>
+                    </Box>
+                  </>
+                )}
               </Flex>
             </Flex>
 
-            {/* {isSubmit && (
-              <> */}
-            <SimpleGrid flex="1" gap="4" minChildWidth="320px" marginTop={6}>
-              <Box p={["6", "8"]} bg="gray.800" borderRadius={8}>
-                <Text fontSize="lg" mb="4">
-                  Gasto mensal x Geração mensal
-                </Text>
-                <Chart
-                  type="bar"
-                  height={300}
-                  options={options}
-                  series={series}
-                />
-              </Box>
-            </SimpleGrid>
-            {/* </>
-            )} */}
+            {isSubmit && (
+              <>
+                <SimpleGrid
+                  flex="1"
+                  gap="4"
+                  minChildWidth="320px"
+                  marginTop={6}
+                >
+                  <Box p={["6", "8"]} bg="gray.800" borderRadius={8}>
+                    <Text fontSize="lg" mb="4">
+                      Gasto mensal x Geração mensal
+                    </Text>
+                    <Chart
+                      type="bar"
+                      height={300}
+                      options={options}
+                      series={series}
+                    />
+                  </Box>
+                </SimpleGrid>
+              </>
+            )}
           </Flex>
         </Flex>
       </Flex>

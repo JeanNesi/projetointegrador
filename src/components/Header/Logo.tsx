@@ -12,7 +12,7 @@ export function Logo() {
         >
           SATC
         </Text>
-        <Text as="span" color="yellow.400" ml="1" fontSize={["2xl", "3xl"]}>
+        <Text as="span" color="whithe" ml="1" fontSize={["2xl", "3xl"]}>
           Sun
         </Text>
       </Flex>
