@@ -112,6 +112,9 @@ export default function Dashboard() {
   const [numerosInversor, setNumerosInversor] = useState(0);
   const [valorMediaMensal, setValorMediaMensal] = useState(0);
   const [valorTotal, setValorTotal] = useState(0);
+  const [valorTotalMo, setValorTotalMo] = useState(0);
+  const [valorTotalIn, setValorTotalIn] = useState(0);
+  const [paymentt, setPaymentt] = useState(0);
 
   const series = [
     {
@@ -161,11 +164,16 @@ export default function Dashboard() {
   function calcular(modulee) {
     setNumeroModulos(pfv / (parseInt(modulee) / 1000));
     setPfv(mediaMensal / (4.38 * 30 * desempenho));
+    setValorTotal((valorTotalIn + valorTotalMo) * 1.2);
+
+    setValorTotalMo(Math.ceil(numeroModulos) * parseFloat(valueModule));
+    setValorTotalIn(numerosInversor * parseFloat(valueInversor));
+    setPaymentt(parseInt(valorTotal / valorMediaMensal));
   }
 
   return (
     <>
-      <Flex direction="column" h="100vh">
+      <Flex direction="column" marginBottom={10}>
         <Header />
 
         <Flex w="100%" my="6" maxWidth={1480} mx="auto" px="6">
@@ -228,6 +236,7 @@ export default function Dashboard() {
                     <Input
                       onChange={(e) => {
                         setJaneiro(parseInt(e.target.value));
+                        calcular(selectedModule);
                       }}
                       name="jan"
                       type="number"
@@ -238,7 +247,10 @@ export default function Dashboard() {
                   <Box width={"7%"}>
                     Fev
                     <Input
-                      onChange={(e) => setFevereiro(parseInt(e.target.value))}
+                      onChange={(e) => {
+                        setFevereiro(parseInt(e.target.value));
+                        calcular(selectedModule);
+                      }}
                       type="text"
                       placeholder="KW"
                       name="fev"
@@ -248,7 +260,10 @@ export default function Dashboard() {
                   <Box width={"7%"}>
                     Mar
                     <Input
-                      onChange={(e) => setMarço(parseInt(e.target.value))}
+                      onChange={(e) => {
+                        setMarço(parseInt(e.target.value));
+                        calcular(selectedModule);
+                      }}
                       type="number"
                       name="mar"
                       placeholder="KW"
@@ -371,6 +386,7 @@ export default function Dashboard() {
                           dezembro) /
                           12
                       );
+                      setOpenMenu(false);
                     }}
                   >
                     Calcular
@@ -383,7 +399,7 @@ export default function Dashboard() {
               <Stack w="100%">
                 <Box w={"100%"}>
                   <Text>Irradiação solar diária média</Text>
-                  <Input disabled value={`4,18 kWh/m2.dia`} />
+                  <Input disabled value={`4,38 kWh/m2.dia`} />
                 </Box>
 
                 <Box w={"100%"}>
@@ -403,7 +419,9 @@ export default function Dashboard() {
                     min="0"
                     placeholder="Digite o valor"
                     id="valorModulo"
-                    onChange={(e) => setValorMediaMensal(e.target.value)}
+                    onChange={(e) =>
+                      setValorMediaMensal(parseFloat(e.target.value))
+                    }
                   />
                 </Box>
 
@@ -416,17 +434,41 @@ export default function Dashboard() {
                     required
                     max="1"
                     min="0"
-                    onChange={(e) => setDesempenho(parseFloat(e.target.value))}
+                    onChange={(e) => {
+                      setDesempenho(parseFloat(e.target.value));
+                      setNumeroModulos(pfv / (parseInt(selectedModule) / 1000));
+                      setPfv(mediaMensal / (4.38 * 30 * desempenho));
+                      setValorTotal(valorTotalIn + valorTotalMo);
+
+                      setValorTotalMo(
+                        Math.ceil(numeroModulos) * parseFloat(valueModule)
+                      );
+                      setValorTotalIn(
+                        numerosInversor * parseFloat(valueInversor)
+                      );
+                    }}
                   />
                 </Box>
 
                 <Box w={"100%"}>
-                  <Text>Potência do módulo</Text>
+                  <Text>Potência do módulo(W)</Text>
                   <Input
                     required
-                    placeholder="Digite o valor"
+                    placeholder="Digite o valor(w) "
                     min="0"
-                    onChange={(e) => setSelectedModule(e.target.value)}
+                    onChange={(e) => {
+                      setSelectedModule(e.target.value);
+                      setNumeroModulos(pfv / (parseInt(selectedModule) / 1000));
+                      setPfv(mediaMensal / (4.38 * 30 * desempenho));
+                      setValorTotal(valorTotalIn + valorTotalMo);
+
+                      setValorTotalMo(
+                        Math.ceil(numeroModulos) * parseFloat(valueModule)
+                      );
+                      setValorTotalIn(
+                        numerosInversor * parseFloat(valueInversor)
+                      );
+                    }}
                   />
                 </Box>
 
@@ -437,15 +479,39 @@ export default function Dashboard() {
                     min="0"
                     placeholder="Digite o valor"
                     id="valorModulo"
-                    onChange={(e) => setValueModule(e.target.value)}
+                    onChange={(e) => {
+                      setValueModule(e.target.value);
+                      setNumeroModulos(pfv / (parseInt(selectedModule) / 1000));
+                      setPfv(mediaMensal / (4.38 * 30 * desempenho));
+                      setValorTotal(valorTotalIn + valorTotalMo);
+
+                      setValorTotalMo(
+                        Math.ceil(numeroModulos) * parseFloat(valueModule)
+                      );
+                      setValorTotalIn(
+                        numerosInversor * parseFloat(valueInversor)
+                      );
+                    }}
                   />
                 </Box>
 
                 <Box w={"100%"}>
-                  <Text>Potência do Inversor</Text>
+                  <Text>Potência do Inversor(KW)</Text>
                   <Input
                     placeholder="Digite o valor"
-                    onChange={(e) => setSelectedInversor(e.target.value)}
+                    onChange={(e) => {
+                      setSelectedInversor(e.target.value);
+                      setNumeroModulos(pfv / (parseInt(selectedModule) / 1000));
+                      setPfv(mediaMensal / (4.38 * 30 * desempenho));
+                      setValorTotal(valorTotalIn + valorTotalMo);
+
+                      setValorTotalMo(
+                        Math.ceil(numeroModulos) * parseFloat(valueModule)
+                      );
+                      setValorTotalIn(
+                        numerosInversor * parseFloat(valueInversor)
+                      );
+                    }}
                   />
                 </Box>
 
@@ -456,7 +522,19 @@ export default function Dashboard() {
                     min="0"
                     placeholder="Digite o valor"
                     id="valorModulo"
-                    onChange={(e) => setValueInversor(e.target.value)}
+                    onChange={(e) => {
+                      setValueInversor(e.target.value);
+                      setNumeroModulos(pfv / (parseInt(selectedModule) / 1000));
+                      setPfv(mediaMensal / (4.38 * 30 * desempenho));
+                      setValorTotal(valorTotalIn + valorTotalMo);
+
+                      setValorTotalMo(
+                        Math.ceil(numeroModulos) * parseFloat(valueModule)
+                      );
+                      setValorTotalIn(
+                        numerosInversor * parseFloat(valueInversor)
+                      );
+                    }}
                   />
                 </Box>
 
@@ -467,7 +545,19 @@ export default function Dashboard() {
                     min="0"
                     placeholder="Digite a quantidade"
                     id="valorModulo"
-                    onChange={(e) => setNumerosInversor(e.target.value)}
+                    onChange={(e) => {
+                      setNumerosInversor(parseInt(e.target.value));
+                      setNumeroModulos(pfv / (parseInt(selectedModule) / 1000));
+                      setPfv(mediaMensal / (4.38 * 30 * desempenho));
+                      setValorTotal(valorTotalIn + valorTotalMo);
+
+                      setValorTotalMo(
+                        Math.ceil(numeroModulos) * parseFloat(valueModule)
+                      );
+                      setValorTotalIn(
+                        numerosInversor * parseFloat(valueInversor)
+                      );
+                    }}
                   />
                 </Box>
 
@@ -514,7 +604,8 @@ export default function Dashboard() {
                         {selectedInversor} KW
                       </Text>
                       <Text>
-                        <strong>Valor do inversor</strong>: R${valueInversor}
+                        <strong>Valor do inversor</strong>: R$
+                        {String(valueInversor)}
                       </Text>
                       <Text>
                         <strong>Unidades do inversor</strong>: {numerosInversor}{" "}
@@ -528,12 +619,25 @@ export default function Dashboard() {
                         <strong>Média mensal</strong>: R${valorMediaMensal}
                       </Text>
                       <Text>
-                        <strong>Dez</strong>: {dezembro} KW
+                        <strong>Valor total do módulos</strong>: R$
+                        {valorTotalMo}
+                      </Text>
+                      <Text>
+                        <strong>Valor total do inversor</strong>: R$
+                        {valorTotalIn}
+                      </Text>
+                      <br />
+                      <Text fontSize={"25"}>
+                        <strong>Valor total</strong>: R${valorTotal}
+                      </Text>
+                      <br />
+                      <Text fontSize={"25"}>
+                        <strong>Tempo para se pagar</strong>: {paymentt} meses
                       </Text>
                     </Box>
                     <Box fontSize="20px">
                       <Text fontWeight="bold" fontSize="30px">
-                        Consumo:
+                        Consumo
                       </Text>
                       <Text>
                         <strong>Jan</strong>: {janeiro} KW

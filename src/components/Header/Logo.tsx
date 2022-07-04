@@ -16,7 +16,6 @@ export function Logo() {
           Sun
         </Text>
       </Flex>
-      <Image w={10} h={10} src="/assets/sun.png" />
     </Flex>
   );
 }
